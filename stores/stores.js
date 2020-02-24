@@ -1,26 +1,27 @@
-const stores = (descripcion) => {
-    
-    switch (comando) {
-        case 'local1':
-            lon=2;
-            lat=3;
-            break;
-    
-        case 'local2':
-            lon=2;
-            lat=3;
-            break;
-    
-        case 'local3':
-            lon=2;
-            lat=3;
-            break;
-    
-        default:
-            console.log('no es una tienda admitida.');
-    
+const fs = require('fs');
+
+const cargarStore = () => {
+    try {
+        wheater = require('../stores/stores.json');
+    } catch (error) {
+        wheater = [];
     }
-    
-    return new_w;
+}
+
+const getStore = () => {
+    cargarStore();
+    return wheater;
+}
+
+const actualizar = (descripcion) => {
+    cargarStore();
+    let index = wheater.findIndex(tarea => tarea.descripcion === descripcion);
+    if (index >= 0) {
+        wheater[index].completado = completado;
+        guardarDB();
+        return true;
+    } else {
+        return false;
+    }
 
 }
