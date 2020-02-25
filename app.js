@@ -1,39 +1,24 @@
+
 const argv = require('./config/yargs').argv;
 const weather_list = require('./weather_list/list');
 const store = require('./stores/stores');
+const clima = require('./clima/clima');
 
 let comando = argv._[0];
+let tarea = store.Getubi(argv.descripcion);
+let listado = store.getStore();
 
-console.log(argv.descripcion);
+const getInfo = async() => {
+    try {
+        const temp   = await clima.getClima( listado[tarea].lat, listado[tarea].lon);       
+        const tarea1 = await weather_list.crear(argv.descripcion,temp);
+        return `El clima de ${ listado[tarea].local } es de ${ temp }.`;
 
-switch (comando) {
-    case 'crear':
-        let tarea = weather_list.crear(argv.descripcion);
-        console.log(tarea);
-        break;
-
-    case 'listar':
-        let listado = weather_list.getListado();
-        for (let tarea of listado) {
-            console.log('========wheater list========');
-            console.log(tarea.descripcion);
-            console.log('Estado: ', tarea.completado);
-            console.log('==========================');
-        }
-        break;
-
-    case 'actualizar':
-
-        let actualizado = weather_list.actualizar(argv.descripcion, argv.completado);
-        console.log(actualizado);
-        break;
-
-    case 'borrar':
-        let borrado = weather_list.borrar(argv.descripcion);
-        console.log(borrado);
-        break;
-
-    default:
-        console.log('Comando no es reconocido.');
-
+    } catch (e) {
+        return `No se pudo determinar el clima`;
+    }
 }
+
+getInfo()
+    .then( console.log )
+    .catch( console.log );

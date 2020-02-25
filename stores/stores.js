@@ -2,26 +2,31 @@ const fs = require('fs');
 
 const cargarStore = () => {
     try {
-        wheater = require('../stores/stores.json');
+        wheater = require('../db/stores.json');
     } catch (error) {
         wheater = [];
     }
 }
+
 
 const getStore = () => {
     cargarStore();
     return wheater;
 }
 
-const actualizar = (descripcion) => {
+const Getubi = (local) => {
     cargarStore();
-    let index = wheater.findIndex(tarea => tarea.descripcion === descripcion);
+    let index = wheater.findIndex(tarea => tarea.local === local);
     if (index >= 0) {
-        wheater[index].completado = completado;
-        guardarDB();
-        return true;
+        return index;
     } else {
         return false;
     }
 
+}
+
+module.exports = {
+    Getubi,
+    cargarStore,
+    getStore
 }

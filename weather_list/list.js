@@ -1,5 +1,4 @@
 const fs = require('fs');
-
 let wheater = [];
 
 const guardarDB = () => {
@@ -7,7 +6,6 @@ const guardarDB = () => {
     fs.writeFile('db/data.json', data, (err) => {
         if (err) throw new Error('No se pudo grabar', err);
     });
-
 }
 
 const cargarDB = () => {
@@ -16,60 +14,24 @@ const cargarDB = () => {
     } catch (error) {
         wheater = [];
     }
-
 }
 
 
-const crear = (descripcion) => {
+const crear = (local,clima) => {
     cargarDB();
-    let new_w = {
-        descripcion,
-        completado: false
-    };
-    wheater.push(new_w);
-    guardarDB();
-    return new_w;
-
-}
-
-const getListado = () => {
-    cargarDB();
-    return wheater;
-}
-
-const actualizar = (descripcion, completado = true) => {
-    cargarDB();
-    let index = wheater.findIndex(tarea => tarea.descripcion === descripcion);
+    let index = wheater.findIndex(tarea => tarea.local === local);
     if (index >= 0) {
-        wheater[index].completado = completado;
+        wheater[index].clima = clima;
         guardarDB();
-        return true;
+        return index;
     } else {
         return false;
-    }
-
-}
-
-const borrar = (descripcion) => {
-
-    cargarDB();
-
-    let nuevoListado = wheater.filter(tarea => tarea.descripcion !== descripcion);
-
-    if (wheater.length === nuevoListado.length) {
-        return false;
-    } else {
-        wheater = nuevoListado;
-        guardarDB();
-        return true;
     }
 
 }
 
 
 module.exports = {
-    crear,
-    getListado,
-    actualizar,
-    borrar
+    crear
+
 }
